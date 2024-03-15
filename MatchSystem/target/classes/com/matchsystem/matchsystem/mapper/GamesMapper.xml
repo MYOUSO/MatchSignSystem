@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.matchsystem.matchsystem.mapper.GamesMapper">
+    <select id="pageText" resultType="com.matchsystem.matchsystem.pojo.Games">
+        select * from games
+        <where>
+            <if test="name != null and name !=''">
+                and name like concat('', #{name}, '%')
+            </if>
+            <if test="type != null and type !=0">
+                and type = #{type}
+            </if>
+            <if test="startTime != null and endTime != null">
+                and start_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        <if test="orderType !=null and orderType!=''">
+            <if test="order == 1">
+                ORDER BY ${orderType}
+            </if>
+            <if test="order == 2">
+                ORDER BY ${orderType} DESC
+            </if>
+        </if>
+    </select>
+    <select id="textCount" resultType="java.lang.Long">
+        select count(*) from games
+        <where>
+            <if test="name != null and name !=''">
+                and name like concat('', #{name}, '%')
+            </if>
+            <if test="type != null and type != 0 ">
+                and type = #{type}
+            </if>
+            <if test="startTime != null and endTime != null">
+                and start_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="age">
+        <span>年龄 {{ age }} 是</span>
+        <span v-if = "age <= 35">年轻人</span>
+        <span v-else-if  = "age > 35">老年人</span>
+        <span v-else>???</span>
+        <br>
+        <input type="text" v-model="url">
+        <button @click="redirectToUrl">点我</button>
+        <br>
+        <table border="1" cellspacing ="0" width ="60%">
+            <tr>
+            <th>鸡序号</th>
+            <th>鸡类型</th>
+            <th>鸡年龄</th>
+            <th>鸡单价</th>
+            <th>鸡数量</th>
+            </tr>
+            <tr align="center" v-for="(chicken, index) in Chickens" >
+                <td>{{ index + 1 }}</td>
+                <td>{{ chicken.type }}</td>
+                <td>{{ chicken.age }}</td>
+                <td>{{ chicken.money }}</td>
+                <td>
+                    <span  v-if="chicken.count<=5">{{ chicken.count }}<br><span style="color: rgb(255, 0, 0);">[缺货]</span></span>
+                    <span v-else-if="chicken.count>5&&chicken.count<=100">{{ chicken.count }} <br><span style="color: rgb(255, 221, 0);" >[稀缺]</span></span>
+                    <span  v-else>{{ chicken.count }} <br><span style="color: rgb(77, 255, 0);">[充足]</span></span>
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <br>
+    <br>
+    <input type ="button" value="获取数据GET" onclick="get()">
+    <input type ="button" value="获取数据POST" onclick="post()">
+
+    
+
+
+
+
+    <script>
+        function get(){
+            axios ({
+                method :"get",
+                url:"http://yapi.smart-xwork.cn/mock/169327/emp/list"
+
+            }).then (result=>{
+                console.log(result.data)
+            })
+        }
+        function post(){
+            axios({
+            method: "post",
+            url: "http://yapi.smart-xwork.cn/mock/169327/emp/deleteById",
+            data :"id=1 "
+        }).then(result => {
+                console.log(result.data);
+                
+            })
+            
+        }
+
+        new Vue({
+            el:"#app",
+            data:{
+                age:20,
+                url: "https://www.baidu.com",
+                Chickens: [{
+                    type:"清远鸡",
+                    age: 2  ,
+                    money:200,
+                    count:2
+                },{
+                    type:"走地鸡",
+                    age: 3  ,
+                    money:2002,
+                    count:233
+                },{
+                    type:"奥尔良烤鸡",
+                    age: 4  ,
+                    money:2020,
+                    count:1
+                },{
+                    type:"高数鸡",
+                    age: 12  ,
+                    money:2030,
+                    count:54
+                },{
+                    type:"早八鸡",
+                    age: 2  ,
+                    money:23300,
+                    count:2
+                },{
+                    type:"通宵鸡",
+                    age:18,
+                    money:-2,
+                    count:1
+                }
+            ]},
+            methods: {
+                     redirectToUrl: function() {
+                    window.location.href = this.url;
+                    }
+             }
+
+        });
+        
+            
+            
+        
+    </script>
+</body>
+</html>
